@@ -47,6 +47,14 @@ class Turtle {
         this.delay = delay;
     }
 
+    penup() {
+        this.pen.isDrawing = false;
+    }
+
+    pendown() {
+        this.pen.isDrawing = true;
+    }
+
     forward(distance) {
         const forwardX = Math.cos(this.nextAngle * Math.PI / 180) * distance;
         const forwardY = Math.sin(this.nextAngle * Math.PI / 180) * distance;
