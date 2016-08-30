@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>turtle.js</title>
+  <script src="turtle.js"></script>
+</head>
+<body>
+  <script>
+    let turtle = new Turtle();
+    let side = 4;
+    for (let i = 0; i < side; i++) {
+      turtle.forward(100);
+      turtle.left(360 / side);
+    }
+    for (let i = 0; i < side * 2; i++) {
+      turtle.undo();
+    }
+  </script>
+</body>
+
+</html>
