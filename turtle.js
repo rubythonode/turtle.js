@@ -86,8 +86,8 @@ class Turtle {
                 const distanceX = nextPosition.x - this.position.x;
                 const distanceY = nextPosition.y - this.position.y;
 
+                new Line(pen, position, this.position.copy()).draw(this.context);
                 if (endTime < delay) {
-                    new Line(pen, position, this.position.copy()).draw(this.context);
                     this.position.x += (endTime / delay) * distanceX;
                     this.position.y += (endTime / delay) * distanceY;
                 } else {
@@ -183,8 +183,8 @@ class Turtle {
                 const distanceX = state.nextPosition.x - this.position.x;
                 const distanceY = state.nextPosition.y - this.position.y;
 
+                new Line(state.pen, state.nextPosition.copy(), this.position.copy()).draw(this.context);
                 if (endTime < delay) {
-                    new Line(state.pen, state.nextPosition.copy(), this.position.copy()).draw(this.context);
                     this.position.x += (endTime / delay) * distanceX;
                     this.position.y += (endTime / delay) * distanceY;
                 } else {
