@@ -7,17 +7,13 @@ class Turtle {
         this.width = width;
         this.height = height;
         this.delay = 500;
-
         this.pen = new Pen();
-
         this.drawList = [];
-
         this.canvas = document.createElement('canvas');
         this.canvas.width = this.width;
         this.canvas.height = this.height;
         this.context = this.canvas.getContext('2d');
         document.body.appendChild(this.canvas);
-
 
         this.animate();
     }
@@ -69,9 +65,7 @@ class Turtle {
         this.nextPosition.y -= y;
 
         const nextPosition = this.nextPosition.copy();
-
         const delay = this.delay;
-
         const pen = this.pen.copy();
 
         const undoState = {
@@ -108,8 +102,8 @@ class Turtle {
 
     left(angle) {
         this.nextAngle -= angle;
-        const nextAngle = this.nextAngle + angle;
 
+        const nextAngle = this.nextAngle + angle;
         const delay = this.delay;
 
         const undoState = {
@@ -310,9 +304,7 @@ class CommandManager {
 
     undo(turtle) {
         if (!this.undoList.length) return;
-
         const item = this.undoList.pop();
-
         const State = item[0];
 
         new State(turtle).action(item[1]);
