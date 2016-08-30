@@ -221,6 +221,7 @@ class RotateState {
     }
 }
 
+/*
 class TowardsState {
     constructor(turtle) {
         this.turtle = turtle;
@@ -231,6 +232,7 @@ class TowardsState {
         new RotateState(this.turtle).action(state.rotateState);
     }
 }
+*/
 
 class Pen {
     constructor() {
