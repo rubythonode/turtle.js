@@ -15,6 +15,8 @@ turtle.left(angle)
 
 turtle.right(angle)
 
+turtle.undo()
+
 turtle.penup()
 
 turtle.pendown()
