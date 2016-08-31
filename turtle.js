@@ -59,7 +59,7 @@ class Turtle {
         const forwardX = Math.cos(this.nextAngle * Math.PI / 180) * distance;
         const forwardY = Math.sin(this.nextAngle * Math.PI / 180) * distance;
 
-        this.goto(forwardX, -forwardY);
+        this.goto(this.nextPosition.x + forwardX, this.nextPosition.y + forwardY);
     }
 
     backward(distance) {
@@ -69,8 +69,8 @@ class Turtle {
     goto(x, y) {
         const position = this.nextPosition.copy();
 
-        this.nextPosition.x += x;
-        this.nextPosition.y -= y;
+        this.nextPosition.x = x;
+        this.nextPosition.y = y;
 
         const nextPosition = this.nextPosition.copy();
         const delay = this.delay;
@@ -78,8 +78,8 @@ class Turtle {
 
         const undoState = {
             nextPosition: nextPosition.copy(),
-            forwardX: -x,
-            forwardY: y,
+            forwardX: position.x,
+            forwardY: position.y,
             pen: pen,
         };
 
@@ -146,7 +146,19 @@ class Turtle {
         const distanceX = x - this.nextPosition.x;
         const distanceY = y - this.nextPosition.y;
 
-        return Math.atan2(distanceY, distanceX) * 180 / Math.PI;
+        return -(Math.atan2(distanceY, distanceX) * 180 / Math.PI);
+    }
+
+    setHeading(angle) {
+        this.left(angle + this.nextAngle);
+    }
+
+    heading() {
+        return this.nextAngle;
+    }
+
+    position() {
+        return this.nextPosition.copy();
     }
 
     _undoRotate(state) {
@@ -169,8 +181,8 @@ class Turtle {
     }
 
     _undoGo(state) {
-        state.nextPosition.x += state.forwardX;
-        state.nextPosition.y += state.forwardY;
+        state.nextPosition.x = state.forwardX;
+        state.nextPosition.y = state.forwardY;
 
         this.nextPosition = state.nextPosition.copy();
 
@@ -228,19 +240,6 @@ class RotateState {
         this.turtle._undoRotate(state);
     }
 }
-
-/*
-class TowardsState {
-    constructor(turtle) {
-        this.turtle = turtle;
-    }
-
-    action(state) {
-        new GoState(this.turtle).action(state.goState);
-        new RotateState(this.turtle).action(state.rotateState);
-    }
-}
-*/
 
 class Pen {
     constructor() {

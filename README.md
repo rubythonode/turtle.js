@@ -15,12 +15,18 @@ turtle.left(angle)
 
 turtle.right(angle)
 
+turtle.towards(x, y)
+
+turtle.heading()
+
+turtle.setHeading(angle)
+
+turtle.position()
+
 turtle.undo()
 
 turtle.penup()
 
 turtle.pendown()
-
-turtle.towards(x, y)
 
 turtle.setDelay(delay)
