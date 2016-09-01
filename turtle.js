@@ -68,13 +68,13 @@ class Turtle {
 
     goto(x, y) {
         const position = this.nextPosition.copy();
+        const delay = this.delay;
+        const pen = this.pen.copy();
 
         this.nextPosition.x = x;
         this.nextPosition.y = y;
 
         const nextPosition = this.nextPosition.copy();
-        const delay = this.delay;
-        const pen = this.pen.copy();
 
         const undoState = {
             nextPosition: nextPosition.copy(),
@@ -91,13 +91,14 @@ class Turtle {
         this.commands.add(
             new Command((start, current) => {
                 const endTime = current - start;
-                const distanceX = nextPosition.x - this.position.x;
-                const distanceY = nextPosition.y - this.position.y;
+                const distanceX = nextPosition.x - position.x;
+                const distanceY = nextPosition.y - position.y;
 
                 new Line(pen, position, this.position).draw(this.context);
+
                 if (endTime < delay) {
-                    this.position.x += (endTime / delay) * distanceX;
-                    this.position.y += (endTime / delay) * distanceY;
+                    this.position.x = position.x + (endTime / delay) * distanceX;
+                    this.position.y = position.y + (endTime / delay) * distanceY;
                 } else {
                     this.drawList.push(new Line(pen, position, nextPosition));
                     this.position.x = nextPosition.x;
@@ -162,9 +163,9 @@ class Turtle {
     }
 
     _undoRotate(state) {
-        this.nextAngle = state.nextAngle - state.angle;
-
         const delay = this.delay;
+
+        this.nextAngle = state.nextAngle - state.angle;
 
         this.commands.add(
             new Command((start, current) => {
@@ -181,12 +182,13 @@ class Turtle {
     }
 
     _undoGo(state) {
+        const position = state.nextPosition.copy();
+        const delay = this.delay;
+
         state.nextPosition.x = state.forwardX;
         state.nextPosition.y = state.forwardY;
 
         this.nextPosition = state.nextPosition.copy();
-
-        const delay = this.delay;
 
         this.commands.add(
             new Command(() => {
@@ -200,13 +202,14 @@ class Turtle {
         this.commands.add(
             new Command((start, current) => {
                 const endTime = current - start;
-                const distanceX = state.nextPosition.x - this.position.x;
-                const distanceY = state.nextPosition.y - this.position.y;
+                const distanceX = state.nextPosition.x - position.x;
+                const distanceY = state.nextPosition.y - position.y;
 
                 new Line(state.pen, state.nextPosition, this.position).draw(this.context);
+
                 if (endTime < delay) {
-                    this.position.x += (endTime / delay) * distanceX;
-                    this.position.y += (endTime / delay) * distanceY;
+                    this.position.x = position.x + (endTime / delay) * distanceX;
+                    this.position.y = position.y + (endTime / delay) * distanceY;
                 } else {
                     this.position.x = state.nextPosition.x;
                     this.position.y = state.nextPosition.y;
