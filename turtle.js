@@ -94,12 +94,12 @@ class Turtle {
                 const distanceX = nextPosition.x - this.position.x;
                 const distanceY = nextPosition.y - this.position.y;
 
-                new Line(pen, position, this.position.copy()).draw(this.context);
+                new Line(pen, position, this.position).draw(this.context);
                 if (endTime < delay) {
                     this.position.x += (endTime / delay) * distanceX;
                     this.position.y += (endTime / delay) * distanceY;
                 } else {
-                    this.drawList.push(new Line(pen, position.copy(), nextPosition.copy()));
+                    this.drawList.push(new Line(pen, position, nextPosition));
                     this.position.x = nextPosition.x;
                     this.position.y = nextPosition.y;
                     this.commands.next();
@@ -109,13 +109,13 @@ class Turtle {
     }
 
     left(angle) {
-        this.nextAngle -= angle;
-
-        const nextAngle = this.nextAngle + angle;
+        const nextAngle = this.nextAngle;
         const delay = this.delay;
 
+        this.nextAngle -= angle;
+
         const undoState = {
-            nextAngle: nextAngle - angle,
+            nextAngle: this.nextAngle,
             angle: -angle,
         };
 
@@ -203,7 +203,7 @@ class Turtle {
                 const distanceX = state.nextPosition.x - this.position.x;
                 const distanceY = state.nextPosition.y - this.position.y;
 
-                new Line(state.pen, state.nextPosition.copy(), this.position.copy()).draw(this.context);
+                new Line(state.pen, state.nextPosition, this.position).draw(this.context);
                 if (endTime < delay) {
                     this.position.x += (endTime / delay) * distanceX;
                     this.position.y += (endTime / delay) * distanceY;
@@ -273,7 +273,6 @@ class Line {
     }
 }
 
-
 class Position {
     constructor(x, y) {
         this.x = x;
@@ -307,12 +306,9 @@ class CommandManager {
         this.history[0].execute(this.startTime, new Date().getTime());
     }
 
-    redo() {
-        return this.redoList.pop();
-    }
-
     undo(turtle) {
         if (!this.undoList.length) return;
+
         const item = this.undoList.pop();
         const State = item[0];
 
